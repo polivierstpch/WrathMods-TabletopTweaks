@@ -29,7 +29,12 @@ namespace TabletopTweaks.NewContent.Feats {
             var PowerAttack = Resources.GetBlueprint<BlueprintFeature>("9972f33f977fc724c838e59641b2fca5");
             var MonkClass = Resources.GetBlueprint<BlueprintCharacterClass>("e8f21e5b58e0569468e420ebea456124");
 
+            var JabbingStyleIcon = AssetLoader.LoadInternal("Feats", "Icon_JabbingStyle.png");
+            var JabbingDancerIcon = AssetLoader.LoadInternal("Feats", "Icon_JabbingDancer.png");
+            var JabbingMasterIcon = AssetLoader.LoadInternal("Feats", "Icon_JabbingMaster.png");
+            
             var JabbingDancerBuff = Helpers.CreateBuff("JabbingDancerBuff", bp => {
+                bp.m_Icon = JabbingDancerIcon;
                 bp.SetName("Jabbing Dancer");
                 bp.SetDescription("If you hit an opponent with an unarmed strike while using Jabbing Style," +
                                   " you receive a +10 bonus to your Mobility skill checks until the end of the round.");
@@ -38,9 +43,12 @@ namespace TabletopTweaks.NewContent.Feats {
                     c.Descriptor = ModifierDescriptor.UntypedStackable;
                     c.Value = 10;
                 });
+                bp.Ranks = 1;
+                bp.IsClassFeature = true;
             });
 
-            var JabbingDancer = Helpers.CreateBlueprint<BlueprintFeature>("JabbingDancerFeature", bp => {
+            var JabbingDancer = Helpers.CreateBlueprint<BlueprintFeature>("JabbingDancer", bp => {
+                bp.m_Icon = JabbingDancerIcon;
                 bp.SetName(JabbingDancerBuff.Name);
                 bp.SetDescription(JabbingDancerBuff.Description);
                 bp.Groups = new[] { FeatureGroup.Feat, FeatureGroup.CombatFeat,FeatureGroup.StyleFeat };
@@ -63,11 +71,9 @@ namespace TabletopTweaks.NewContent.Feats {
                 c.ConditionsChecker = new ConditionsChecker {
                     Conditions = new Condition[] {
                         new ContextConditionCasterHasFact {
-                            m_Fact = JabbingDancer.ToReference<BlueprintUnitFactReference>(), 
-                            Not = false
+                            m_Fact = JabbingDancer.ToReference<BlueprintUnitFactReference>(),
                         }
-                    },
-                    Operation = Operation.And
+                    }
                 };
                 c.IfTrue = Helpers.CreateActionList(
                     Helpers.Create<ContextActionApplyBuff>(a => {
@@ -77,7 +83,6 @@ namespace TabletopTweaks.NewContent.Feats {
                             BonusValue = 1,
                             DiceCountValue = 0,
                             DiceType = DiceType.Zero,
-                            m_IsExtendable = false,
                             Rate = DurationRate.Rounds
                         };
                         a.UseDurationSeconds = false;
@@ -88,33 +93,34 @@ namespace TabletopTweaks.NewContent.Feats {
                         a.AsChild = false;
                     })
                 );
-                c.IfFalse = null;
+                c.IfFalse = Helpers.CreateActionList();
             });
 
             var JabbingMasterTargetBuff = Helpers.CreateBuff("JabbingMasterTargetBuff", bp => {
+                bp.m_Icon = JabbingMasterIcon;
                 bp.SetName("Jabbing Master Target");
                 bp.SetDescription("While using Jabbing Style, the extra damage you deal when you hit a single target with two unarmed strikes increases to 2d6," +
                                   " and the extra damage when you hit a single target with three or more unarmed strikes increases to 4d6.");
                 bp.Ranks = 1;
                 bp.IsClassFeature = true;
-                bp.Stacking = StackingType.Ignore;
+                bp.Stacking = StackingType.Stack;
             });
 
             var JabbingStyleTargetBuff = Helpers.CreateBuff("JabbingStyleTargetBuff", bp => {
+                bp.m_Icon = JabbingStyleIcon;
                 bp.SetName("Jabbing Style Target");
                 bp.SetDescription("When you hit a target with an unarmed strike and you have hit that target with an unarmed strike previously that round," +
                                   " you deal an extra 1d6 points of damage to that target.");
                 bp.Ranks = 1;
                 bp.IsClassFeature = true;
-                bp.Stacking = StackingType.Ignore;
+                bp.Stacking = StackingType.Stack;
                 bp.AddComponent<AddFactContextActions>(c => {
-                    c.Activated = null;
-                    c.NewRound = null;
+                    c.Activated = Helpers.CreateActionList();
+                    c.NewRound = Helpers.CreateActionList();
                     c.Deactivated = Helpers.CreateActionList(
                         Helpers.Create<ContextActionRemoveBuff>(a => {
                             a.m_Buff = JabbingMasterTargetBuff.ToReference<BlueprintBuffReference>();
                             a.ToCaster = true;
-                            a.RemoveRank = true;
                         })
                     );
                 });
@@ -127,17 +133,16 @@ namespace TabletopTweaks.NewContent.Feats {
                             m_Buff = JabbingStyleTargetBuff.ToReference<BlueprintBuffReference>(),
                             Not = true
                         }
-                    },
-                    Operation = Operation.And
+                    }
                 };
                 c.IfTrue = Helpers.CreateActionList(
                         Helpers.Create<ContextActionApplyBuff>(a => {
                             a.m_Buff = JabbingStyleTargetBuff.ToReference<BlueprintBuffReference>();
                             a.DurationValue = new ContextDurationValue {
+                                m_IsExtendable = false,
                                 BonusValue = 1,
                                 DiceCountValue = 0,
                                 DiceType = DiceType.Zero,
-                                m_IsExtendable = false,
                                 Rate = DurationRate.Rounds
                             };
                             a.ToCaster = false;
@@ -149,11 +154,12 @@ namespace TabletopTweaks.NewContent.Feats {
                             a.AsChild = false;
                         })
                     );
-                c.IfFalse = null;
+                c.IfFalse = Helpers.CreateActionList();
             });
 
-            var JabbingMaster = Helpers.CreateBlueprint<BlueprintFeature>("JabbingMasterFeature", bp => {
-                bp.SetName(JabbingMasterTargetBuff.Name);
+            var JabbingMaster = Helpers.CreateBlueprint<BlueprintFeature>("JabbingMaster", bp => {
+                bp.m_Icon = JabbingMasterIcon;
+                bp.SetName("Jabbing Master");
                 bp.SetDescription(JabbingMasterTargetBuff.Description);
                 bp.Groups = new[] { FeatureGroup.Feat, FeatureGroup.CombatFeat,FeatureGroup.StyleFeat };
                 bp.AddPrerequisiteFeature(ImprovedUnarmedStrike);
@@ -187,8 +193,7 @@ namespace TabletopTweaks.NewContent.Feats {
                             m_Buff = JabbingMasterTargetBuff.ToReference<BlueprintBuffReference>(),
                             Not = true
                         }
-                    },
-                    Operation = Operation.And
+                    }
                 };
                 c.IfTrue = Helpers.CreateActionList(
                         Helpers.Create<ContextActionApplyBuff>(a => {
@@ -209,9 +214,11 @@ namespace TabletopTweaks.NewContent.Feats {
                             a.AsChild = false;
                         })
                     );
+                c.IfFalse = Helpers.CreateActionList();
             });
             
             var JabbingStyleBuff = Helpers.CreateBuff("JabbingStyleBuff", b => {
+                b.m_Icon = JabbingStyleIcon;
                 b.SetName("Jabbing Style");
                 b.SetDescription(JabbingStyleTargetBuff.Description);
                 b.AddComponent<AddJabbingStyleDamage>(c => {
@@ -226,18 +233,14 @@ namespace TabletopTweaks.NewContent.Feats {
                             JabbingDancerBuffApply
                         );
                     c.OnlyHit = true;
-                    c.OnlyOnFirstAttack = false;
-                    c.OnlyOnFullAttack = false;
-                    c.ReduceHPToZero = false;
-                    c.CriticalHit = false;
                     c.RangeType = WeaponRangeType.Melee;
-                    c.Category = WeaponCategory.UnarmedStrike;
                     c.WaitForAttackResolve = true;
                     c.CheckWeaponRangeType = true;
                 });
             });
 
             var JabbingStyleAbility = Helpers.CreateBlueprint<BlueprintActivatableAbility>("JabbingStyleAbility", bp => {
+                bp.m_Icon = JabbingStyleIcon;
                 bp.SetName(JabbingStyleBuff.Name);
                 bp.SetDescription(JabbingStyleBuff.Description);
                 bp.m_Buff = JabbingStyleBuff.ToReference<BlueprintBuffReference>();
@@ -248,7 +251,8 @@ namespace TabletopTweaks.NewContent.Feats {
                 bp.DoNotTurnOffOnRest = true; 
             });
 
-            var JabbingStyle = Helpers.CreateBlueprint<BlueprintFeature>("JabbingStyleFeature", bp => {
+            var JabbingStyle = Helpers.CreateBlueprint<BlueprintFeature>("JabbingStyle", bp => {
+                bp.m_Icon = JabbingStyleIcon;
                 bp.SetName(JabbingStyleBuff.Name);
                 bp.SetDescription(JabbingStyleBuff.Description);
                 bp.Groups = new[] { FeatureGroup.Feat, FeatureGroup.CombatFeat, FeatureGroup.StyleFeat };
@@ -265,7 +269,6 @@ namespace TabletopTweaks.NewContent.Feats {
                 });
                 bp.AddComponent<AddFacts>(c => {
                     c.m_Facts = new[] { JabbingStyleAbility.ToReference<BlueprintUnitFactReference>() };
-                    c.name = $"AddFacts${bp.NameSafe()}";
                     c.DoNotRestoreMissingFacts = true;
                 });
             });
