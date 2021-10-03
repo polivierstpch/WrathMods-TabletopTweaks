@@ -52,7 +52,8 @@
             "SpellSpecializationGreater": true,
             "StreetSmarts": true,
             "NatureSoul": true,
-            "AnimalAlly": true
+            "AnimalAlly": true,
+            "JabbingStyle": true
         }
     },
     "FighterAdvancedWeaponTraining": {

@@ -88,6 +88,7 @@ namespace TabletopTweaks.NewContent {
                 Feats.NatureSoul.AddNatureSoul();
                 Feats.AnimalAlly.AddAnimalAlly();
                 Feats.SpellSpecializationGreater.AddSpellSpecializationGreater();
+                Feats.JabbingStyle.AddJabbingStyle();
 
                 Feats.ShatterDefenses.AddNewShatterDefenseBlueprints();
 
