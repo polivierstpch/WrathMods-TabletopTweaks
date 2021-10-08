@@ -64,7 +64,9 @@ All fixes and added content are configurable and can be disabled by editing the 
         Steel Headbut
         
     Adds the following archetypes:
-        Metamagic Rager
+        Bloodrager - Metamagic Rager
+        Warpriest - Divine Commander
+        Druid - Nature Fang
 
     Adds the following feats:
         Dervish Dance
@@ -87,6 +89,9 @@ All fixes and added content are configurable and can be disabled by editing the 
         Nature Soul
         Animal Ally
         Greater Spell Specialization
+        Erastil's Blessing
+        Stalwart
+        Improved Stalwart
 
     Adds the following rogue talents:
         Graceful Athlete
@@ -151,6 +156,7 @@ All fixes and added content are configurable and can be disabled by editing the 
         Fixed limitless rage not granting extra temp hp
         Primalist
             Prevents qualification of Extra Rage power feat
+            All Rage powers should now work
         Reformed Fiend
             Fixes Hatred Against Evil
     Cavalier
@@ -196,6 +202,9 @@ All fixes and added content are configurable and can be disabled by editing the 
     Monk
         Zen Archer
             Perfect Strike now upgrades at level 10
+    Oracle
+        Natures Whispers no longer stacks with Scaled Fist
+        Curses should no progress at the correct rate
     Ranger
         Reverts favorable enemy outsider to work on all outsiders
         Espionage Expert

@@ -14,6 +14,11 @@ namespace TabletopTweaks.NewContent {
                 Main.LogHeader("Loading New Content");
                 BaseAbilities.OneHandedToggleAbility.AddOneHandedToggle();
 
+                Templates.AlignmentTemplates.AddCelestialTemplate();
+                Templates.AlignmentTemplates.AddEntropicTemplate();
+                Templates.AlignmentTemplates.AddFiendishTemplate();
+                Templates.AlignmentTemplates.AddResoluteTemplate();
+
                 WeaponEnchantments.NonStackingTempEnchantments.AddWeaponEnhancements();
 
                 Races.Dwarf.AddDwarfHeritage();
@@ -56,14 +61,18 @@ namespace TabletopTweaks.NewContent {
                 Bloodlines.DestinedBloodline.AddBloodragerDestinedBloodline();
                 Bloodlines.DestinedBloodline.AddSorcererDestinedBloodline();
                 Bloodlines.AbyssalBloodline.AddBloodragerAbyssalDemonicBulkEnlargeBuff();
-
+                //Features to support existing clases
                 Classes.Loremaster.AddLoremasterFeatures();
+                Classes.Cavalier.AddCavalierFeatures();
+                Classes.Oracle.AddOracleFeatures();
+                //Features to support existing archetypes
+                Archetypes.MadDog.AddMadDogFeatures();
                 //New archetypes
                 Archetypes.CauldronWitch.AddCauldrenWitch();
                 Archetypes.ElementalMaster.AddElementalMaster();
                 Archetypes.MetamagicRager.AddMetamagicRager();
-                //Features to support existing archetypes
-                Archetypes.MadDog.AddMadDogFeatures();
+                Archetypes.DivineCommander.AddDivineCommander();
+                Archetypes.NatureFang.AddNatureFang();
 
                 Spells.LongArms.AddLongArms();
                 Spells.ShadowEnchantment.AddShadowEnchantment();
@@ -89,6 +98,9 @@ namespace TabletopTweaks.NewContent {
                 Feats.AnimalAlly.AddAnimalAlly();
                 Feats.SpellSpecializationGreater.AddSpellSpecializationGreater();
                 Feats.JabbingStyle.AddJabbingStyle();
+                Feats.Stalwart.AddStalwart();
+
+                Feats.ErastilsBlessing.AddErastilsBlessing();
 
                 Feats.ShatterDefenses.AddNewShatterDefenseBlueprints();
 
