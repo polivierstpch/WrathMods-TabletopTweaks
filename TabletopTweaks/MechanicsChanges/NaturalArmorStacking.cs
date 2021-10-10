@@ -49,9 +49,9 @@ namespace TabletopTweaks.MechanicsChanges {
                 if (ModSettings.Fixes.BaseFixes.IsDisabled("DisableNaturalArmorStacking")) { return instructions; }
                 var codes = new List<CodeInstruction>(instructions);
                 int target = FindInsertionTarget(codes);
-                Utilities.ILUtils.LogIL(codes);
+                //Utilities.ILUtils.LogIL(codes);
                 codes[target] = new CodeInstruction(OpCodes.Ldc_I4, (int)NaturalArmor.Bonus);
-                Utilities.ILUtils.LogIL(codes);
+                //Utilities.ILUtils.LogIL(codes);
                 return codes.AsEnumerable();
             }
             private static int FindInsertionTarget(List<CodeInstruction> codes) {
@@ -153,11 +153,15 @@ namespace TabletopTweaks.MechanicsChanges {
                             component.Descriptor = (ModifierDescriptor)NaturalArmor.Bonus;
                             Main.LogPatch($"Patched", component.OwnerBlueprint);
                         });
+                    var AnimalGrowthBuff = Resources.GetBlueprint<BlueprintBuff>("3fca5d38053677044a7ffd9a872d3a0a");
                     var LegendaryProportionsBuff = Resources.GetBlueprint<BlueprintBuff>("4ce640f9800d444418779a214598d0a3");
                     LegendaryProportionsBuff.GetComponents<AddContextStatBonus>()
                         .Where(c => c.Descriptor == (ModifierDescriptor)NaturalArmor.Bonus)
                         .ForEach(c => c.Descriptor = (ModifierDescriptor)NaturalArmor.Size);
                     Main.LogPatch("Patched", LegendaryProportionsBuff);
+                    AnimalGrowthBuff.GetComponents<AddContextStatBonus>()
+                        .Where(c => c.Descriptor == ModifierDescriptor.NaturalArmorEnhancement)
+                        .ForEach(c => c.Descriptor = (ModifierDescriptor)NaturalArmor.Stackable);
                 }
             }
         }

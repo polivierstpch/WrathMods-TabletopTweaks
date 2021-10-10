@@ -17,6 +17,7 @@
         "DisableAll": false,
         "Enabled": {
             "NatureFang": true,
+            "ChannelerOfTheUnknown": true,
             "DivineCommander": true,
             "CauldronWitchArchetype": true,
             "ElementalMasterArchetype": true,
@@ -53,11 +54,14 @@
             "Self-Sufficient": true,
             "ShingleRunner": true,
             "SpellSpecializationGreater": true,
-            "Stalwart":  true,
+            "Stalwart": true,
             "StreetSmarts": true,
             "NatureSoul": true,
             "AnimalAlly": true,
-            "JabbingStyle": true
+            "JabbingStyle": true,
+            "CelestialServant": true,
+            "ImprovedChannel": true,
+            "QuickChannel": true
         }
     },
     "FighterAdvancedWeaponTraining": {
