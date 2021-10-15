@@ -50,10 +50,8 @@ namespace TabletopTweaks.NewContent {
                 FighterAdvancedArmorTrainings.SteelHeadbutt.AddSteelHeadbutt();
 
                 Features.AeonBaneIncreaseResourceFeature.AddAeonBaneIncreaseResourceFeature();
-                Features.CavalierMounts.AddCavalierMountFeatureWolf();
                 Features.PrimalistRagePowerSelection.AddPrimalistRagePowerSelection();
                 Features.LongspearChargeBuff.AddLongspearChargeBuff();
-                Features.CavalierMobilityFeature.AddCavalierMobilityFeature();
                 Features.PerfectStrikeZenArcherBuff.AddPerfectStrikeZenArcherBuff();
                 Features.DragonDiscipleSpellbooks.AddDragonDiscipleSpellbooks();
 
